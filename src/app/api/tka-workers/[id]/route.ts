@@ -5,7 +5,7 @@ import { requirePermission } from '@/lib/auth'
 import { validateInput, tkaWorkerSchema } from '@/lib/validation'
 import type { TKAWorker, TKAWorkerWithFamily, TKAFamilyMember } from '@/lib/types'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET(
   request: NextRequest,

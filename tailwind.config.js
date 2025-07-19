@@ -1,4 +1,4 @@
-// tailwind.config.js
+// tailwind.config.js - Tailwind v4 Format
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,38 +9,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--color-border) / <alpha-value>)",
+        input: "hsl(var(--color-input) / <alpha-value>)",
+        ring: "hsl(var(--color-ring) / <alpha-value>)",
+        background: "hsl(var(--color-background) / <alpha-value>)",
+        foreground: "hsl(var(--color-foreground) / <alpha-value>)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(var(--color-primary) / <alpha-value>)",
+          foreground: "hsl(var(--color-primary-foreground) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(var(--color-secondary) / <alpha-value>)",
+          foreground: "hsl(var(--color-secondary-foreground) / <alpha-value>)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(var(--color-destructive) / <alpha-value>)",
+          foreground: "hsl(var(--color-destructive-foreground) / <alpha-value>)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(var(--color-muted) / <alpha-value>)",
+          foreground: "hsl(var(--color-muted-foreground) / <alpha-value>)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(var(--color-accent) / <alpha-value>)",
+          foreground: "hsl(var(--color-accent-foreground) / <alpha-value>)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "hsl(var(--color-popover) / <alpha-value>)",
+          foreground: "hsl(var(--color-popover-foreground) / <alpha-value>)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(var(--color-card) / <alpha-value>)",
+          foreground: "hsl(var(--color-card-foreground) / <alpha-value>)",
         },
       },
       borderRadius: {
@@ -50,56 +50,4 @@ module.exports = {
       },
     },
   },
-  plugins: [],
 }
-
-// postcss.config.mjs
-/** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-}
-
-export default config
-
-// next.config.js
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    // Use Edge Runtime for API routes when possible
-    serverComponentsExternalPackages: ['pg']
-  },
-  
-  // Optimize bundle size
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        crypto: false,
-      }
-    }
-    return config
-  },
-  
-  // Compress responses
-  compress: true,
-  
-  // Optimize images
-  images: {
-    domains: ['localhost'],
-    formats: ['image/webp', 'image/avif'],
-  },
-
-  // Environment variables
-  env: {
-    DATABASE_URL: process.env.DATABASE_URL,
-    JWT_SECRET: process.env.JWT_SECRET,
-  }
-}
-
-module.exports = nextConfig

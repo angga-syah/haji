@@ -3,7 +3,7 @@ import { Pool, PoolClient } from 'pg'
 
 // Single PostgreSQL connection for all environments
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL!,
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:fsn285712@localhost:5432/invoice_db',
   max: process.env.NODE_ENV === 'production' ? 20 : 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,

@@ -5,7 +5,7 @@ import { requireAuth, requirePermission } from '@/lib/auth'
 import { validateInput, invoiceSchema, invoiceSearchSchema } from '@/lib/validation'
 import { PAGINATION } from '@/lib/constants'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET(request: NextRequest) {
   try {

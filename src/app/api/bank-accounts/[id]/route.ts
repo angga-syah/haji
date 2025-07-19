@@ -4,7 +4,7 @@ import { Database } from '@/lib/database'
 import { requireAuth, requirePermission } from '@/lib/auth'
 import { validateInput, bankAccountSchema } from '@/lib/validation'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET(
   request: NextRequest,
@@ -188,3 +188,4 @@ export async function DELETE(
     )
   }
 }
+

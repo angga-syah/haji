@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { AuthService, requireAuth } from '@/lib/auth'
 import { validateInput, profileUpdateSchema } from '@/lib/validation'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function PUT(request: NextRequest) {
   try {
