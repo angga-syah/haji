@@ -16,9 +16,12 @@ interface InvoicesTableProps {
   onEdit?: (invoice: InvoiceWithDetails) => void
   onDelete?: (invoice: InvoiceWithDetails) => void
   onPrint?: (invoice: InvoiceWithDetails) => void
+  onStatusChange?: (invoiceId: string, newStatus: string) => Promise<void>
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
   onSort?: (column: string) => void
+  canMarkAsPaid?: boolean
+  canEdit?: boolean
 }
 
 const getStatusBadge = (status: string) => {

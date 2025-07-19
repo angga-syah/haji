@@ -43,6 +43,7 @@ export interface Company {
   updated_at: string
 }
 
+
 export interface CreateCompanyData {
   company_name: string
   npwp: string
@@ -95,6 +96,13 @@ export interface JobDescription {
   created_by: string
   created_at: string
   updated_at: string
+}
+
+export interface CompanyWithJobs extends Company {
+  job_count: number
+  invoice_count: number
+  total_amount: number
+  job_descriptions: JobDescription[]
 }
 
 export interface CreateJobDescriptionData {
@@ -181,6 +189,13 @@ export interface CreateInvoiceLineData {
   custom_job_description?: string
   custom_price?: number
   quantity: number
+}
+
+export interface InvoiceTotals {
+  subtotal: number
+  vat_amount: number
+  total_amount: number
+  vat_percentage: number
 }
 
 // ========== EXTENDED TYPES FOR VIEWS ==========

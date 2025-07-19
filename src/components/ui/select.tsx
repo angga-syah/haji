@@ -1,4 +1,4 @@
-// components/ui/select.tsx
+// src/components/ui/select.tsx - Fix onChange prop
 import React from 'react'
 import { cn } from '@/lib/utils'
 
@@ -6,10 +6,20 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
   error?: string
   options: Array<{ value: string; label: string }>
   placeholder?: string
+  onValueChange?: (value: string) => void
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, error, options, placeholder, ...props }, ref) => {
+  ({ className, error, options, placeholder, onValueChange, onChange, ...props }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      if (onValueChange) {
+        onValueChange(e.target.value)
+      }
+      if (onChange) {
+        onChange(e)
+      }
+    }
+
     return (
       <div className="w-full">
         <select
@@ -19,6 +29,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             className
           )}
           ref={ref}
+          onChange={handleChange}
           {...props}
         >
           {placeholder && (

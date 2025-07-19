@@ -59,8 +59,8 @@ export const jobDescriptionSchema = z.object({
   company_id: z.string().uuid('Invalid company ID'),
   job_name: z.string().min(2, 'Job name must be at least 2 characters').max(200),
   job_description: z.string().min(5, 'Job description must be at least 5 characters').max(1000),
-  price: z.coerce.number().min(0, 'Price must be positive').max(999999999.99, 'Price is too large'),
-  sort_order: z.coerce.number().int().min(0).optional()
+  price: z.preprocess((val) => Number(val), z.number().min(0, 'Price must be positive').max(999999999.99, 'Price is too large')),
+  sort_order: z.preprocess((val) => val ? Number(val) : 0, z.number().int().min(0).optional())
 })
 
 // ========== BANK ACCOUNT VALIDATION ==========

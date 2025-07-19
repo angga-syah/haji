@@ -18,6 +18,7 @@ interface TKAWorkersTableProps {
   sortBy?: string
   sortDirection?: 'asc' | 'desc'
   onSort?: (column: string) => void
+  canEdit?: boolean
 }
 
 export function TKAWorkersTable({
