@@ -46,28 +46,20 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const user = await requirePermission(request, 'bank_accounts', 'update')
     const { id } = params
     const body = await request.json()
     
-    // Check if bank account exists
     const existing = await Database.findOne('bank_accounts', { id })
     if (!existing) {
-      return NextResponse.json(
-        { error: 'Bank account not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Bank account not found' }, { status: 404 })
     }
     
-    // Validate input
     const validatedData = validateInput(bankAccountSchema, body)
     
-    // Check for duplicate account number (excluding current)
+    // Check for duplicate account number
     const duplicateCheck = await Database.query(`
       SELECT id FROM bank_accounts 
       WHERE account_number = $1 AND id != $2 AND is_active = true
@@ -80,9 +72,8 @@ export async function PUT(
       )
     }
 
-    // Update bank account with transaction
     const updatedBankAccount = await Database.transaction(async (client) => {
-      // If setting as default, unset other defaults first
+      // Fix: Access properties safely
       if (validatedData.is_default && !existing.is_default) {
         await client.query(`
           UPDATE bank_accounts 
@@ -91,7 +82,6 @@ export async function PUT(
         `, [id])
       }
       
-      // Update bank account
       const result = await client.query(`
         UPDATE bank_accounts 
         SET bank_name = $1, account_number = $2, account_name = $3,
@@ -103,7 +93,7 @@ export async function PUT(
         validatedData.account_number,
         validatedData.account_name,
         validatedData.is_default || false,
-        validatedData.sort_order || existing.sort_order,
+        validatedData.sort_order || existing.sort_order || 0,
         id
       ])
       
