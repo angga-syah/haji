@@ -1,0 +1,239 @@
+{
+  "name": "invoice-management-electron",
+  "version": "1.0.0",
+  "description": "Desktop version of Invoice Management System with printer support",
+  "main": "./dist/main/main.js",
+  "author": {
+    "name": "Spirit of Services",
+    "email": "support@spiritofservices.com"
+  },
+  "homepage": "https://spiritofservices.com",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "invoice",
+    "management",
+    "electron",
+    "desktop",
+    "printer",
+    "TKA",
+    "accounting"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spiritofservices/invoice-management.git"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "build:win": "electron-vite build && electron-builder --win",
+    "build:mac": "electron-vite build && electron-builder --mac", 
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "build:all": "electron-vite build && electron-builder --win --mac --linux",
+    "preview": "electron-vite preview",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "clean": "rimraf dist",
+    "rebuild": "electron-rebuild",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .ts,.tsx --ignore-path .gitignore --fix"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
+    "electron-updater": "^6.1.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@electron-toolkit/eslint-config": "^1.0.2",
+    "@electron-toolkit/eslint-config-ts": "^1.0.1",
+    "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/node": "^20.10.6",
+    "@types/uuid": "^9.0.7",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "electron": "^28.1.3",
+    "electron-builder": "^24.9.1",
+    "electron-rebuild": "^3.2.9",
+    "electron-vite": "^2.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  },
+  "build": {
+    "appId": "com.spiritofservices.invoice",
+    "productName": "Invoice Management System",
+    "copyright": "Copyright © 2024 Spirit of Services",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "../../dist-electron",
+      "buildResources": "./build"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      {
+        "from": "../../dist",
+        "to": "renderer",
+        "filter": ["**/*"]
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "./resources",
+        "to": "resources"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "./build/icon.ico",
+      "publisherName": "Spirit of Services",
+      "verifyUpdateCodeSignature": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "./build/icon.icns",
+      "category": "public.app-category.business",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "./build/entitlements.mac.plist",
+      "entitlementsInherit": "./build/entitlements.mac.plist"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        },
+        {
+          "target": "rpm",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "./build/icon.png",
+      "category": "Office",
+      "synopsis": "Professional invoice management system",
+      "desktop": {
+        "StartupWMClass": "invoice-management"
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "installerIcon": "./build/installer.ico",
+      "uninstallerIcon": "./build/uninstaller.ico",
+      "installerHeaderIcon": "./build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": true,
+      "runAfterFinish": true,
+      "menuCategory": "Business",
+      "shortcutName": "Invoice Management System"
+    },
+    "dmg": {
+      "title": "Invoice Management System ${version}",
+      "icon": "./build/icon.icns",
+      "iconSize": 100,
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "deb": {
+      "synopsis": "Professional invoice management system for TKA services",
+      "description": "A comprehensive invoice management system designed for managing TKA (Foreign Worker) services, companies, and job descriptions with advanced printing capabilities.",
+      "category": "Office",
+      "priority": "optional",
+      "depends": [
+        "libgtk-3-0",
+        "libxss1",
+        "libxtst6",
+        "libxrandr2",
+        "libasound2",
+        "libpangocairo-1.0-0",
+        "libatk1.0-0",
+        "libcairo-gobject2",
+        "libgtk-3-0",
+        "libgdk-pixbuf2.0-0"
+      ]
+    },
+    "rpm": {
+      "synopsis": "Professional invoice management system for TKA services",
+      "description": "A comprehensive invoice management system designed for managing TKA (Foreign Worker) services, companies, and job descriptions with advanced printing capabilities.",
+      "category": "Office"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    },
+    "appx": {
+      "applicationId": "SpiritOfServices.InvoiceManagement",
+      "backgroundColor": "transparent",
+      "displayName": "Invoice Management System",
+      "identityName": "SpiritOfServices.InvoiceManagement",
+      "publisher": "CN=Spirit of Services",
+      "publisherDisplayName": "Spirit of Services"
+    },
+    "snap": {
+      "synopsis": "Professional invoice management system",
+      "description": "A comprehensive invoice management system for TKA services",
+      "category": "office",
+      "grade": "stable",
+      "confinement": "strict"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "spiritofservices",
+      "repo": "invoice-management",
+      "private": true
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "Chrome 120"
+  ]
+}
